@@ -1,8 +1,10 @@
+from disnake import file
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium_stealth import stealth
 import time
 
+product_list = open('product_list.txt','w')
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
 
@@ -30,7 +32,9 @@ price = driver.find_elements(By.CLASS_NAME, 'product-card__price')
 
 print(nazvanie)
 for name in nazvanie:
-        print(name.text)
+    #print(name.text)
+    product_list.write(f"{name.text}\n")
 for cena in price:
-        print(cena.text)
+    print(cena.text)
 driver.quit()
+product_list.close()
