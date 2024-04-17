@@ -1,4 +1,3 @@
-from disnake import file
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium_stealth import stealth
