@@ -3,7 +3,11 @@ from selenium.webdriver.common.by import By
 from selenium_stealth import stealth
 import time
 
+with open('product_list.txt', 'w'):
+    pass
+
 product_list = open('product_list.txt','w')
+
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
 
