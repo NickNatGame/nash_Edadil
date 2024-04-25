@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium_stealth import stealth
+from product import Products
 import time
 
 with open('product_list.txt', 'w'):
@@ -11,6 +12,7 @@ product_list = open('product_list.txt','w')
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
 
+lst_products = []
 # options.add_argument("--headless")
 
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -34,10 +36,16 @@ nazvanie = driver.find_elements(By.CLASS_NAME, 'product-card__title-wrapper')
 price = driver.find_elements(By.CLASS_NAME, 'product-card__price')
 
 print(nazvanie)
-for name in nazvanie:
+for i in range(len(nazvanie)):
     #print(name.text)
-    product_list.write(f"{name.text}\n")
-for cena in price:
-    print(cena.text)
+    #lst_name.append(f"{name.text}")
+    lst_products[i] = Products(f"{nazvanie[i].text}",f"{price[i].text}")
+    #product_list.write(f"{name.text}\n")
+#for i in range(len(price)):
+ #   lst_products[i] = Products("price.text")
+    #lst_price.append(f"{cena.text}")
+    #product_list.write(f"{cena.text}\n")
+
+
 driver.quit()
 product_list.close()
