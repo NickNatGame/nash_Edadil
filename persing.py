@@ -4,8 +4,6 @@ from selenium_stealth import stealth
 from product import Products
 import time
 
-with open('product_list.txt', 'w'):
-    pass
 
 product_list = open('product_list.txt','w')
 
@@ -30,22 +28,27 @@ stealth(driver,
 
 url = "https://www.perekrestok.ru/cat/search?search=%D1%85%D0%BB%D0%B5%D0%B1"
 driver.get(url)
+time.sleep(5)
+
 
 # Найдем элемент с классом 'product-card__title-wrapper'
-nazvanie = driver.find_elements(By.CLASS_NAME, 'product-card__title-wrapper')
+nazvanie = driver.find_elements(By.CLASS_NAME, 'product-card__title')
 price = driver.find_elements(By.CLASS_NAME, 'product-card__price')
 
 print(nazvanie)
 for i in range(len(nazvanie)):
-    #print(name.text)
+    #print(nazvanie[i].text)
+    #print(price[i].text)
     #lst_name.append(f"{name.text}")
-    lst_products[i] = Products(f"{nazvanie[i].text}",f"{price[i].text}")
+    product_1 = Products(nazvanie[i].text,price[i].text)
+    lst_products.append(product_1)
     #product_list.write(f"{name.text}\n")
 #for i in range(len(price)):
  #   lst_products[i] = Products("price.text")
     #lst_price.append(f"{cena.text}")
     #product_list.write(f"{cena.text}\n")
 
-
+for i in range(len(lst_products)):
+    print(lst_products[i].name,lst_products[i].price)
 driver.quit()
 product_list.close()
