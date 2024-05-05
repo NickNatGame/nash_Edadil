@@ -3,5 +3,5 @@ class Products:
         self.name = name
         self.price = price
 
-    def get_all_products(self):
-        return self.name, self.price
+    def to_json(self):
+        return {"name": self.name, "price": self.price}
