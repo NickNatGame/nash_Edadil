@@ -6,13 +6,11 @@ from clear_lst import clear_file
 import time
 import json
 
-lst_1 = []
+save_lst = []
 clear_file()
 lst_url = ["https://www.perekrestok.ru/cat/search?search=хлеб","https://www.perekrestok.ru/cat/search?search=рыба","https://www.perekrestok.ru/cat/search?search=мясо", "https://www.perekrestok.ru/cat/search?search=молоко"]
 
 # options.add_argument("--headless")
-with open("file.json", "r") as file:
-    data = json.load(file)
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -35,13 +33,9 @@ for i in range(len(lst_url)):
     price = driver.find_elements(By.CLASS_NAME, 'price-new')
 
     for i in range(len(nazvanie)):
-        product_1 = Products(nazvanie[i].text, price[i].text)
-        dict = product_1.to_json()
-        lst_1.append(dict)
-        lst_products.append(product_1)
-
-    for i in range(len(lst_products)):
-        print(lst_products[i].name,lst_products[i].price)
+        prod = Products(nazvanie[i].text, price[i].text[5:])
+        save_lst.append(prod.to_json())
+        lst_products.append(prod)
 with open("product_list.json", "w") as json_file:
-    json.dump(lst_1, json_file)
+    json.dump(save_lst, json_file)
 driver.quit()
