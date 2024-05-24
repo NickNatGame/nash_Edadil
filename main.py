@@ -2,15 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium_stealth import stealth
 from product import Products
-from clear_lst import clear_file
-from persing import perekrestok
+from work_with_json import clear_file,save_file
+from persing import perekrestok,azvuka_vkusa,pyaterochka,lenta
 from test import test_json,test_class
 import time
 import json
 
 
-# options.add_argument("--headless")
 options = webdriver.ChromeOptions()
+#options.add_argument("--headless")
 options.add_argument("start-maximized")
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
@@ -25,8 +25,9 @@ stealth(driver,
         )
 
 clear_file()
-save_lst = perekrestok(driver)
-with open("product_list.json", "w") as json_file:
-    json.dump(save_lst, json_file)
-#print(test_json)
+#save_file(perekrestok(driver))
+save_file(azvuka_vkusa(driver))
+#save_file(lenta(driver))
+#save_file(pyaterochka(driver))
+print(test_json)
 driver.quit()
