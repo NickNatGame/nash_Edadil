@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium_stealth import stealth
 from product import Products
 from work_with_json import clear_file,save_file
-from persing import perekrestok,azvuka_vkusa,pyaterochka,lenta
+from persing import perekrestok,azvuka_vkusa,spar
 from test import test_json,test_class
 import time
 import json
@@ -25,9 +25,7 @@ stealth(driver,
         )
 
 clear_file()
-#save_file(perekrestok(driver))
-save_file(azvuka_vkusa(driver))
-#save_file(lenta(driver))
-#save_file(pyaterochka(driver))
+#save_file(azvuka_vkusa(driver))
+save_file(spar(driver)+perekrestok(driver))
 print(test_json)
 driver.quit()

@@ -26,7 +26,7 @@ def perekrestok(driver):
     return save_lst
 def azvuka_vkusa(driver):
     save_lst = []
-    lst_url = ["https://av.ru/search?text=%D0%BC%D1%8F%D1%81%D0%BE  "]
+    lst_url = ["https://av.ru/search?text=%D0%BC%D1%8F%D1%81%D0%BE"]
     for i in range(len(lst_url)):
         lst_products = []
         driver.get(lst_url[i])
@@ -38,40 +38,28 @@ def azvuka_vkusa(driver):
         for i in range(len(nazvanie)):
             print(nazvanie[i].text)
     return save_lst
-def pyaterochka(driver):
+def spar(driver):
     save_lst = []
-    lst_url = ["https://5ka.ru/special_offers"]
+    lst_url = [
+               "https://myspar.ru/catalog/khleb/",
+               "https://myspar.ru/catalog/okhlazhdennaya-ryba-2025/",
+               "https://myspar.ru/catalog/zamorozhennaya-ryba-2025/",
+               "https://myspar.ru/catalog/govyadina-telyatina/",
+               "https://myspar.ru/catalog/myaso/",
+               "https://myspar.ru/catalog/ptitsa/",
+               "https://myspar.ru/catalog/moloko/"
+              ]
     for i in range(len(lst_url)):
         lst_products = []
         driver.get(lst_url[i])
-        time.sleep(5)
+        time.sleep(10)
 
-        search_box = driver.find_element(By.TAG_NAME,"input")
-        search_box.send_keys("молоко")
-        search_box.send_keys(Keys.RETURN)
-
-        # Пример ожидания загрузки результатов поиска
-        driver.implicitly_wait(10)
-
-        nazvanie = driver.find_elements(By.CLASS_NAME, 'item-name')
-        price = driver.find_elements(By.CLASS_NAME, 'price')
-        image = driver.find_elements(By.CLASS_NAME, 'product-images-slider_tab')
-
+        nazvanie = driver.find_elements(By.CLASS_NAME, "catalog-tile__name")
+        price = driver.find_elements(By.CLASS_NAME, 'prices__cur')
+        image = driver.find_elements(By.TAG_NAME, 'source')
         for i in range(len(nazvanie)):
-            print(nazvanie[i].text)
+            prod = Products(nazvanie[i].text, price[i].text[5:], image[i].get_attribute("srcset"))
+            save_lst.append(prod.to_json())
+            lst_products.append(prod)
     return save_lst
-def lenta(driver):
-    save_lst = []
-    lst_url = ["https://lenta.com/search/?searchText=%D0%BC%D1%8F%D1%81%D0%BE&searchSource=Sku"]
-    for i in range(len(lst_url)):
-        lst_products = []
-        driver.get(lst_url[i])
-        time.sleep(5)
 
-        nazvanie = driver.find_elements(By.CLASS_NAME, 'lui-sku-product-card-text lui-sku-product-card-text--view-primary')
-        price = driver.find_elements(By.CLASS_NAME, 'lui-priceText lui-priceText--view_regular')
-        image = driver.find_elements(By.CLASS_NAME, 'lui-sku-product-card-image')
-
-        for i in range(len(nazvanie)):
-            print(nazvanie[i].text)
-    return save_lst
