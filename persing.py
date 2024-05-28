@@ -20,7 +20,7 @@ def perekrestok(driver):
         image = driver.find_elements(By.CLASS_NAME, 'product-card__image')
 
         for i in range(len(nazvanie)):
-            prod = Products(nazvanie[i].text, price[i].text[5:], image[i].get_attribute("src"))
+            prod = Products(nazvanie[i].text, price[i].text[5:-1], image[i].get_attribute("src"),'perekrestok')
             save_lst.append(prod.to_json())
             lst_products.append(prod)
     return save_lst
@@ -52,13 +52,14 @@ def spar(driver):
     for i in range(len(lst_url)):
         lst_products = []
         driver.get(lst_url[i])
-        time.sleep(10)
+        time.sleep(5)
 
         nazvanie = driver.find_elements(By.CLASS_NAME, "catalog-tile__name")
         price = driver.find_elements(By.CLASS_NAME, 'prices__cur')
         image = driver.find_elements(By.TAG_NAME, 'source')
         for i in range(len(nazvanie)):
-            prod = Products(nazvanie[i].text, price[i].text[5:], image[i].get_attribute("srcset"))
+            price_1 = price[i].text[:len(price[i].text)-3] + ',' + price[i].text[-2:]
+            prod = Products(nazvanie[i].text, price[i].text[:len(price[i].text)-3] + ',' + price[i].text[-2:], image[i].get_attribute("srcset"),'eurospar')
             save_lst.append(prod.to_json())
             lst_products.append(prod)
     return save_lst

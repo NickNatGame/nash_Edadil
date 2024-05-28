@@ -5,6 +5,7 @@ from product import Products
 from work_with_json import clear_file,save_file
 from persing import perekrestok,azvuka_vkusa,spar
 from test import test_json,test_class
+from analize import analize
 import time
 import json
 
@@ -27,5 +28,6 @@ stealth(driver,
 clear_file()
 #save_file(azvuka_vkusa(driver))
 save_file(spar(driver)+perekrestok(driver))
-print(test_json)
+#print(test_json)
+analize()
 driver.quit()
