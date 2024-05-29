@@ -1,9 +1,9 @@
 class Products:
-    def __init__(self, name, price,image,store):
+    def __init__(self, name, price,image,shop):
         self.name = name
         self.price = price
         self.image = image
-        self.store = store
+        self.shop = shop
 
     def to_json(self):
-        return {"name": self.name, "price": self.price, "image": self.image, "shop": self.store}
+        return {"name": self.name, "price": self.price, "image": self.image, "shop": self.shop}
