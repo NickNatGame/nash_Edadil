@@ -1,6 +1,6 @@
 import './App.css';
 import { Component } from 'react';
-import CardList from './components/card-list/card-list.component';
+import CardList from './components/card-list/card-list.component'
 
 class App extends Component {
   constructor(){
@@ -15,7 +15,7 @@ class App extends Component {
     };
   }
 
-  handleToggleFav = (product) => {
+  handleToggleFav = (product) => { //добавить в/убрать из изб.
     const { fav } = this.state;
     if (fav.has(product)) {
       const newFav = new Set(fav);
@@ -27,19 +27,19 @@ class App extends Component {
       newFav.add(product);
       this.setState({ fav: newFav });
     }
-    console.log("Updated fav:", this.state.fav);
+    //console.log("Updated fav:", this.state.fav);
   };
 
-  handleAddToCart = (product) => {
+  handleAddToCart = (product) => { //добавить в cart
     this.setState({
       cart: [...this.state.cart, product]
     }, () => {
-      console.log('Updated cart:', this.state.cart);
       this.changeCartSet();
+      //console.log('Updated cart:', this.state.cart);
     });
   }
 
-  handleRemoveFromCart = (product) => {
+  handleRemoveFromCart = (product) => { //удалить из cart
     const index = this.state.cart.indexOf(product);
     if (index !== -1) {
       const updatedCart = [
@@ -49,21 +49,21 @@ class App extends Component {
       this.setState({
         cart: updatedCart
       }, () => {
-        console.log('Updated Cart Array:', this.state.cart);
         this.changeCartSet();
+        //console.log('Updated Cart Array:', this.state.cart);
       });
     }
   }
   
-  changeCartSet = () => {
+  changeCartSet = () => { //обновить cartSet в соответствии с cart
     const { cart } = this.state;
     const newCartSet = new Set(cart);
     this.setState({ cartSet: newCartSet }, () => {
-      console.log('Updated Cart Set:', this.state.cartSet);
+      //console.log('Updated Cart Set:', this.state.cartSet);
     });
   }
 
-  cartCount = (product) => {
+  cartCount = (product) => { //кол-во вхождений product в cart
     const { cart } = this.state;
     let count = 0;
     cart.forEach(item => {
@@ -74,20 +74,57 @@ class App extends Component {
     return count;
   }
 
-  switchTab = (num) =>{
+  switchTab = (num) =>{ //поменять вкладку
     this.setState({searchField:""});
     this.setState({tab:num});
+  }
+
+  confirmCart = () => { //подтведить корзину, записать .json
+    var cartJSON = JSON.stringify(this.state.cart);
+    console.log(cartJSON);
+    //var fs = require("fs"); 
+    //fs.writeFile( "example.txt",  "This is sentences written in a file",  function (err) { 
+    //if (err) { 
+    //  return console.error(err); 
+    //} 
+    // Reading the file 
+    //fs.readFile("example.txt", function (err, data) { 
+    //  if (err) { 
+    //    return console.error(err); 
+    //  } 
+    //  console.log("Data read : " + data.toString());
+    //  });}); 
+}
+
+  matchingProducts(){
+    const groupedProducts = {};
+
+    this.state.products.forEach(product => {
+      const key = product.name.slice(0, 10);
+      if (!groupedProducts[key]) {
+        groupedProducts[key] = [];
+      }
+      // Check if the product's store is not already in the group
+      const isInGroup = groupedProducts[key].some(groupProduct => groupProduct.store === product.store);
+      if (!isInGroup) {
+        groupedProducts[key].push(product);
+      }
+    });
+
+    return Object.values(groupedProducts).map(group => group.sort((a, b) => a.price - b.price)); 
   }
   
   renderContent() {
 
     const { tab, products, searchField } = this.state;
-    const filteredProducts = products.filter((product) => {
+
+    const filteredProducts = products.filter((product) => { //фильтр по строке поиска
       return product.name.toLowerCase().includes(searchField);
     });
-    const totalPrice = () => {
+
+    const totalPrice = () => { //общая стоимость
       const { cart } = this.state;
-      return cart.reduce((total, item) => (total + parseFloat(item.price.replace(',', '.'))), 0);
+      return (cart.reduce((total, item) => (total + parseFloat(item.price.replace(',', '.'))), 0).toFixed(2).replace('.', ','));
     }
 
     return (
@@ -130,6 +167,7 @@ class App extends Component {
   
         {tab === 2 && (                 //избранное = fav
           <div>
+            <hr />
             {[...this.state.fav].map((product) => ( 
               <div key={product.id}> 
                 <div><h3>{product.name}<button onClick={() => this.handleToggleFav(product)}>♡</button></h3></div>
@@ -162,6 +200,8 @@ class App extends Component {
             </div>
           ))}
           <h2>{totalPrice()} ₽</h2>
+          <hr />
+          <button onClick={()=>this.confirmCart()}>get fucked</button>
         </div>
       )}
       </div>
@@ -172,7 +212,8 @@ class App extends Component {
   render() {
     return (
       <div>
-      <CardList/>
+        <button onClick={console.log(this.matchingProducts)}>matchingProducts</button>
+        <CardList/>
         {this.renderContent()}
       </div>
     );
