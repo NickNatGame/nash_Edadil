@@ -20,7 +20,7 @@ def perekrestok(driver):
         image = driver.find_elements(By.CLASS_NAME, 'product-card__image')
 
         for i in range(len(nazvanie)):
-            prod = Products(nazvanie[i].text, price[i].text[5:-2], image[i].get_attribute("src"),'перекресток')
+            prod = Products(nazvanie[i].text, price[i].text[5:-2].replace(",","."), image[i].get_attribute("src"),'перекресток')
             save_lst.append(prod.to_json())
             lst_products.append(prod)
     return save_lst
@@ -59,9 +59,8 @@ def spar(driver):
         image = driver.find_elements(By.TAG_NAME, 'source')
         for i in range(len(nazvanie)):
             price_1 = price[i].text[:-2]
-            prod = Products(nazvanie[i].text,price_1[:-2]+','+price_1[-2:], image[i].get_attribute("srcset"),'евроспар')
+            prod = Products(nazvanie[i].text,price_1[:-2]+'.'+price_1[-2:], image[i].get_attribute("srcset"),'евроспар')
             save_lst.append(prod.to_json())
             lst_products.append(prod)
     return save_lst
-#5000 R
 
