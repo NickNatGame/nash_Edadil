@@ -13,7 +13,7 @@ def perekrestok(driver):
     for i in range(len(lst_url)):
         lst_products = []
         driver.get(lst_url[i])
-        #time.sleep(5)
+        time.sleep(5)
 
         nazvanie = driver.find_elements(By.CLASS_NAME, 'product-card__title')
         price = driver.find_elements(By.CLASS_NAME, 'price-new')
