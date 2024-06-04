@@ -2,6 +2,8 @@ import './App.css';
 import { Component } from 'react';
 import CardList from './components/card-list/card-list.component'
 import SearchBox from './components/search-box/search-box.component.jsx'
+
+
 class App extends Component {
   constructor(){
     super();
@@ -117,7 +119,7 @@ class App extends Component {
         {tab === 1 && (                   //все = filteredProducts
           <div>
             <SearchBox 
-              className='search-box'
+              className='products-search-box'
               onChangeHandler={onSearchChange} 
               placeholder='Поиск'
               
@@ -178,7 +180,7 @@ class App extends Component {
           ))}
           <h2>{totalPrice()} ₽</h2>
           <hr />
-          <button onClick={()=>this.confirmCart()}>get fucked</button>
+          <button onClick={()=>this.confirmCart()}> C:</button>
         </div>
       )}
       </div>
