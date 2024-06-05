@@ -27,7 +27,7 @@ stealth(driver,
 
 #clear_file()
 #save_file(azvuka_vkusa(driver))
-#save_file(perekrestok(driver)+spar(driver)+azvuka_vkusa(driver))
+#save_file(azvuka_vkusa(driver)+perekrestok(driver)+spar(driver))
 #save_file(perekrestok(driver))
 #test_json()
 analize()

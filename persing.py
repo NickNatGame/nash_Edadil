@@ -25,19 +25,25 @@ def perekrestok(driver):
     return save_lst
 def azvuka_vkusa(driver):
     save_lst = []
-    lst_url = ["https://av.ru/search?text=%D0%BC%D1%8F%D1%81%D0%BE"]
+    lst_url = ["https://av.ru/search/?text=%D1%85%D0%BB%D0%B5%D0%B1",
+               "https://av.ru/search?text=%D1%80%D1%8B%D0%B1%D0%B0",
+               "https://av.ru/search/?text=%D0%BC%D1%8F%D1%81%D0%BE",
+               "https://av.ru/search?text=%D0%BC%D0%BE%D0%BB%D0%BE%D0%BA%D0%BE"]
 
     for i in range(len(lst_url)):
         driver.get(lst_url[i])
-        time.sleep(10)
-        nazvanie = driver.find_elements(By.CLASS_NAME, 'product-info_name-container')
+        button = driver.find_element(By.CLASS_NAME,"button_content")
+        button.click()
+        body = driver.find_element(By.TAG_NAME,'body')
+        for i in range(20):
+            body.send_keys(Keys.ARROW_RIGHT)
+        time.sleep(8)
+        nazvanie = driver.find_elements(By.CLASS_NAME, 'product-info_name')
         price = driver.find_elements(By.CLASS_NAME, 'product-price_current-price')
-        image = driver.find_elements(By.CLASS_NAME, 'product-images-slider_tab_item')
+        #image = driver.find_elements(By.CLASS_NAME, 'product-images-slider')
         for i in range(len(nazvanie)):
-            if (price[i].text != ''):
-                prod = Products(nazvanie[i].text, price[i].text[:-2].replace(",", "."), image[i].get_attribute("src"),
-                                'азбука вкуса')
-                save_lst.append(prod.to_json())
+            prod = Products(nazvanie[i].text, price[i].text[:-2].replace(",", "."),"", 'азбука вкуса')
+            save_lst.append(prod.to_json())
     return save_lst
 def spar(driver):
     save_lst = []
