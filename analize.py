@@ -1,7 +1,9 @@
+import itertools
+
 from product import Products
 import time
 import json,random
-
+from itertools import permutations
 
 def perek(summ):
     if(summ < 700):
@@ -23,7 +25,7 @@ def analize():
         l = json.load(file)
 
 
-    for i in range(10):
+    for i in range(5):
         j = random.randint(0,len(l)-1)
         cart.append(l[j])
     cart_new = [[0 for i in range(4)]for i in range(len(cart))]
@@ -32,11 +34,6 @@ def analize():
     cart_new[2][0] = random.randint(0, 10)
     cart_new[3][0] = random.randint(0, 10)
     cart_new[4][0] = random.randint(0, 10)
-    cart_new[5][0] = random.randint(0, 10)
-    cart_new[6][0] = random.randint(0, 10)
-    cart_new[7][0] = random.randint(0, 10)
-    cart_new[8][0] = random.randint(0, 10)
-    cart_new[9][0] = random.randint(0, 10)
 
 
 
@@ -57,20 +54,20 @@ def analize():
                         cart_new[i][2] = l[t]
                     if (l[t].get("store") == "евроспар"):
                         cart_new[i][3] = l[t]
-
-    for p in range(1,3**len(cart)):
-        #p - troichn chislo nado sdelatb
-        p = f"{p}"
-        for i in range(len(p)):
-            if p[i] == 0:
+    digits = [1, 2, 3]
+    cart_var = list(itertools.product(digits, repeat=len(cart)))
+    lst = []
+    for i in range(len(cart_var)):
+        s = ""
+        for j in range(len(cart_var[i])):
+            s += f"{cart_var[i][j]}"
+        for j in range(len(s)):
+            if cart_new[j][int(s[j])] == 0:
                 continue
-            else:
-                if(perek(p[i]) != False and eurospar(p[i]) != False):
-                    perek(p[i]) + eurospar(p[i]) + azbuka(p[i])
+            if perek(float(cart_new[j][int(s[j])].get("price"))) + eurospar(float(cart_new[j][int(s[j])].get("price"))) + azbuka(float(cart_new[j][int(s[j])].get("price"))) not in lst:
+                lst.append(perek(float(cart_new[j][int(s[j])].get("price"))*cart_new[j][0]) + eurospar(float(cart_new[j][int(s[j])].get("price"))*cart_new[j][0]) + azbuka(float(cart_new[j][int(s[j])].get("price"))*cart_new[j][0]))
 
-
-
-
+    print(lst)
 
 
     for i in range(len(cart_new)):

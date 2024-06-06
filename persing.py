@@ -20,7 +20,7 @@ def perekrestok(driver):
 
         for i in range(len(nazvanie)):
             if(price[i].text != ''):
-                prod = Products(nazvanie[i].text, price[i].text[5:-2].replace(",","."), image[i].get_attribute("src"),'перекресток')
+                prod = Products(nazvanie[i].text, price[i].text[5:-2].replace(",",".").replace(" ",""), image[i].get_attribute("src"),'перекресток')
                 save_lst.append(prod.to_json())
     return save_lst
 def azvuka_vkusa(driver):
@@ -66,6 +66,6 @@ def spar(driver):
         for i in range(len(nazvanie)):
             price_1 = price[i].text[:-2]
             if(price_1 != ""):
-                prod = Products(nazvanie[i].text,price_1[:-2]+'.'+price_1[-2:], image[i].get_attribute("srcset"),'евроспар')
+                prod = Products(nazvanie[i].text,price_1[:-2].replace(" ","")+'.'+price_1[-2:], image[i].get_attribute("srcset"),'евроспар')
                 save_lst.append(prod.to_json())
     return save_lst
