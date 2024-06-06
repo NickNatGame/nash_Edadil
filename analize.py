@@ -14,7 +14,7 @@ def eurospar(summ):
     if summ < 1205:
         return False
     else:
-        return 1205+summ
+        return summ
 
 def analize():
     cart = []
@@ -58,20 +58,18 @@ def analize():
                     if (l[t].get("store") == "евроспар"):
                         cart_new[i][3] = l[t]
 
+    for p in range(1,3**len(cart)):
+        #p - troichn chislo nado sdelatb
+        p = f"{p}"
+        for i in range(len(p)):
+            if p[i] == 0:
+                continue
+            else:
+                if(perek(p[i]) != False and eurospar(p[i]) != False):
+                    perek(p[i]) + eurospar(p[i]) + azbuka(p[i])
 
-    for a in range(len(cart)):
-        for b in range(len(cart)):
-            for c in range(len(cart)):
-                summ = 0
-                if cart_new[a][1] != 0:
-                    summ += float(cart_new[a][1].get("price"))*float(cart_new[a][0])
-                if cart_new[a][2] != 0:
-                    summ += float(cart_new[a][2].get("price"))*float(cart_new[a][0])
-                if cart_new[a][3] != 0:
-                    summ += float(cart_new[a][3].get("price"))*float(cart_new[a][0])
-                if(summ not in cart_var):
-                    cart_var.append(summ)
-    print(cart_var)
+
+
 
 
 

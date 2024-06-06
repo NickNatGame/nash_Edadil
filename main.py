@@ -25,10 +25,10 @@ stealth(driver,
         fix_hairline=True,
         )
 
-clear_file()
+#clear_file()
 #save_file(azvuka_vkusa(driver))
-save_file(azvuka_vkusa(driver)+perekrestok(driver)+spar(driver))
+#save_file(azvuka_vkusa(driver)+perekrestok(driver)+spar(driver))
 #save_file(perekrestok(driver))
-test_json()
+#test_json()
 analize()
 driver.quit()
