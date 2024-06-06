@@ -42,7 +42,7 @@ def azvuka_vkusa(driver):
         price = driver.find_elements(By.CLASS_NAME, 'product-price_current-price')
         #image = driver.find_elements(By.CLASS_NAME, 'product-images-slider')
         for i in range(len(nazvanie)):
-            prod = Products(nazvanie[i].text, price[i].text[:-2].replace(",", "."),"", 'азбука вкуса')
+            prod = Products(nazvanie[i].text, price[i].text.replace(",", ".").replace("\n","").replace("/","").replace("₽","").replace(" ","").replace("кг",""),"", 'азбука вкуса')
             save_lst.append(prod.to_json())
     return save_lst
 def spar(driver):
