@@ -17,10 +17,10 @@
     -moz-osx-font-smoothing: grayscale;
     backface-visibility: hidden;
     transform: translateZ(0);
-    transition: transform 0.25s ease-out;
+    transition: transform 0.15s ease-out;
     text-align: center;
 }
 
 .card-container:hover{
-    transform: scale(1.02);
+    transform: scale(1.01);
 }
