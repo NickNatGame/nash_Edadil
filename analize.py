@@ -25,15 +25,13 @@ def analize():
         l = json.load(file)
 
 
-    for i in range(5):
+    for i in range(15):
         j = random.randint(0,len(l)-1)
         cart.append(l[j])
     cart_new = [[0 for i in range(4)]for i in range(len(cart))]
-    cart_new[0][0] = random.randint(0,10)
-    cart_new[1][0] = random.randint(0, 10)
-    cart_new[2][0] = random.randint(0, 10)
-    cart_new[3][0] = random.randint(0, 10)
-    cart_new[4][0] = random.randint(0, 10)
+    for i in range(len(cart)):
+        cart_new[i][0] = random.randint(0, 10)
+
 
 
 
@@ -57,16 +55,30 @@ def analize():
     digits = [1, 2, 3]
     cart_var = list(itertools.product(digits, repeat=len(cart)))
     lst = []
+    fl = False
+    summ1 = 0
+    summ2 = 0
+    summ3 = 0
     for i in range(len(cart_var)):
         s = ""
+        summ1 = 0
+        summ2 = 0
+        summ3 = 0
         for j in range(len(cart_var[i])):
             s += f"{cart_var[i][j]}"
         for j in range(len(s)):
             if cart_new[j][int(s[j])] == 0:
-                continue
-            if perek(float(cart_new[j][int(s[j])].get("price"))) + eurospar(float(cart_new[j][int(s[j])].get("price"))) + azbuka(float(cart_new[j][int(s[j])].get("price"))) not in lst:
-                lst.append(perek(float(cart_new[j][int(s[j])].get("price"))*cart_new[j][0]) + eurospar(float(cart_new[j][int(s[j])].get("price"))*cart_new[j][0]) + azbuka(float(cart_new[j][int(s[j])].get("price"))*cart_new[j][0]))
-
+                fl = True
+                break
+            fl = False
+            if(s[j] == '1'):
+                summ1 += float(cart_new[j][int(s[j])].get("price"))*float(cart_new[j][0])
+            if(s[j] == '2'):
+                summ2 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
+            if (s[j] == '3'):
+                summ3 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
+        if fl == False:
+            lst.append(azbuka(summ1)+perek(summ2)+eurospar(summ3))
     print(lst)
 
 
