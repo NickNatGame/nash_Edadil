@@ -3,6 +3,9 @@ import './App.css';
 import CardList from './components/card-list/card-list.component';
 import SearchBox from './components/search-box/search-box.component.jsx';
 import productsData from './product_list.json';
+//import Pages from '.components/Pages/Pages.jsx' тут что то другое
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+//import { PageOne, PageTwo } from ; тут что то другое
 
 class App extends Component {
   constructor() {
@@ -56,7 +59,6 @@ class App extends Component {
       });
     }
   }
-  
   changeCartSet = () => { //обновить cartSet в соответствии с cart
     const { cart } = this.state;
     const newCartSet = new Set(cart);
@@ -117,8 +119,6 @@ class App extends Component {
           <button onClick={() => this.switchTab(2)} style={{ marginRight: '10px' }}>Избранное</button>
           <button onClick={() => this.switchTab(3)} style={{ marginRight: '10px' }}>Корзина</button>
         </div>
-        
-  
         {tab === 1 && (                   //все = filteredProducts
           <div>
             <SearchBox 
@@ -132,7 +132,12 @@ class App extends Component {
           </div>
           )
         }
-  
+        <BrowserRouter>
+            <Routes>
+                <Route path="home" element={<PageOne />} />
+                <Route path="cart" element={<PageTwo />} />
+            </Routes>
+        </BrowserRouter>
         {tab === 2 && (                 //избранное = fav [...this.state.fav]
           <div>
             <hr />

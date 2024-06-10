@@ -1,6 +1,6 @@
 import itertools
 
-from product import Products
+from .product import Products
 import time
 import json,random
 from itertools import permutations
@@ -21,18 +21,16 @@ def eurospar(summ):
 def analize():
     cart = []
     cart_var = []
-    with open("product_list.json", "r") as file:
-        l = json.load(file)
 
+    with open("../frontend/src/product_list.json", "r") as file:
+        l = json.load(file)
 
     for i in range(15):
         j = random.randint(0,len(l)-1)
         cart.append(l[j])
     cart_new = [[0 for i in range(4)]for i in range(len(cart))]
     for i in range(len(cart)):
-        cart_new[i][0] = random.randint(0, 10)
-
-
+        cart_new[i][0] = random.randint(1, 10)
 
 
 
@@ -77,12 +75,13 @@ def analize():
                 summ2 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
             if (s[j] == '3'):
                 summ3 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
-        if fl == False:
+        if fl == False and azbuka(summ1) != False and perek(summ2) != False and eurospar(summ3) != False:
             lst.append(azbuka(summ1)+perek(summ2)+eurospar(summ3))
-    print(lst)
 
 
-    for i in range(len(cart_new)):
+    '''for i in range(len(cart_new)):
         for j in range(4):
             print(cart_new[i][j], end = " ")
-        print()
+        print()'''
+    return lst
+
