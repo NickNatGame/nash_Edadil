@@ -26,7 +26,7 @@ def analize():
         l = json.load(file)
 
     for i in range(15):
-        j = random.randint(0,len(l)-1)
+        j = random.randint(0,len(l)-1) #загрузите json пжпж вместо этого
         cart.append(l[j])
     cart_new = [[0 for i in range(4)]for i in range(len(cart))]
     for i in range(len(cart)):
@@ -75,7 +75,7 @@ def analize():
                 summ2 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
             if (s[j] == '3'):
                 summ3 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
-        if fl == False and azbuka(summ1) != False and perek(summ2) != False and eurospar(summ3) != False:
+        if fl == False and perek(summ2) != False and eurospar(summ3) != False:
             lst.append(azbuka(summ1)+perek(summ2)+eurospar(summ3))
 
 
