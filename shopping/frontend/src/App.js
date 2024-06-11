@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import CardList from './components/card-list/card-list.component';
+import Header from './components/header/header.js';
 import SearchBox from './components/search-box/search-box.component.jsx';
 import productsData from './product_list.json';
-//import Pages from '.components/Pages/Pages.jsx' тут что то другое
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-//import { PageOne, PageTwo } from ; тут что то другое
+import api from "./utils/Api.js"
+
+import { Routes, Route} from 'react-router-dom';
 
 class App extends Component {
   constructor() {
@@ -16,58 +17,69 @@ class App extends Component {
       fav: new Set(),
       cart: [],
       cartSet: new Set(),
-      tab: 1 // 1=main; 2=fvrt; 3;cart
+      tab: 1, // 1=main; 2=fvrt; 3;cart
+      analysedCosts: 0
     };
   }
 
-  handleToggleFav = (product) => { //добавить в/убрать из изб.
+  getAllProducts() {
+    api.getAllProducts()
+   .then((initialProducts) => {
+      if (initialProducts!== undefined) {
+        this.setState({products: initialProducts})
+      }
+
+    })
+   .catch((err) => {
+      console.log(err);
+
+    })
+  }
+
+  handleToggleFav = (product) => {
     const { fav } = this.state;
     if (fav.has(product)) {
       const newFav = new Set(fav);
       newFav.delete(product);
       this.setState({ fav: newFav });
-    } 
+    }
     else {
       const newFav = new Set(fav);
       newFav.add(product);
       this.setState({ fav: newFav });
     }
-    //console.log("Updated fav:", this.state.fav);
   };
 
-  handleAddToCart = (product) => { //добавить в cart
+  handleAddToCart = (product) => {
     this.setState({
       cart: [...this.state.cart, product]
     }, () => {
       this.changeCartSet();
-      //console.log('Updated cart:', this.state.cart);
     });
   }
 
-  handleRemoveFromCart = (product) => { //удалить из cart
+  handleRemoveFromCart = (product) => {
     const index = this.state.cart.indexOf(product);
-    if (index !== -1) {
+    if (index!== -1) {
       const updatedCart = [
-        ...this.state.cart.slice(0, index),
-        ...this.state.cart.slice(index + 1)
+       ...this.state.cart.slice(0, index),
+       ...this.state.cart.slice(index + 1)
       ];
       this.setState({
         cart: updatedCart
       }, () => {
         this.changeCartSet();
-        //console.log('Updated Cart Array:', this.state.cart);
       });
     }
   }
-  changeCartSet = () => { //обновить cartSet в соответствии с cart
+
+  changeCartSet = () => {
     const { cart } = this.state;
     const newCartSet = new Set(cart);
-    this.setState({ cartSet: newCartSet }, () => {
-      //console.log('Updated Cart Set:', this.state.cartSet);
-    });
+    this.setState({ cartSet: newCartSet });
   }
 
-  cartCount = (product) => { //кол-во вхождений product в cart
+  cartCount = (product) => {
     const { cart } = this.state;
     let count = 0;
     cart.forEach(item => {
@@ -78,15 +90,21 @@ class App extends Component {
     return count;
   }
 
-  switchTab = (num) =>{ //поменять вкладку
+  switchTab = (num) =>{
     this.setState({searchField:""});
     this.setState({tab:num});
   }
 
-  confirmCart = () => { //подтведить корзину, записать .json ?
+  confirmCart = () => {
     var cartJSON = JSON.stringify(this.state.cart);
-    console.log(cartJSON);
+    this.getAnalysedCosts(cartJSON);
   }
+  getAnalysedCosts(cart)
+  {
+    api.getAnalysedCost(cart)
+    .then((result) => {this.setState({analysedCosts: String(result).replace("[","").replace("]","")});})
+  }
+
 
   onSearchChange=(event)=>{
     const searchField = event.target.value.toLowerCase();
@@ -95,81 +113,65 @@ class App extends Component {
     });
   };
 
-  
   renderContent() {
-
-    const { tab, products, searchField } = this.state;
+    const { products, searchField, analysedCosts } = this.state;
     const {onSearchChange} =this;
-    
-    const filteredProducts = products.filter((product) => { //фильтр по строке поиска
+    const filteredProducts = products.filter((product) => {
       return product.name.toLowerCase().includes(searchField);
     });
 
-    const totalPrice = () => { //общая стоимость
-      const { cart } = this.state;
-      return (cart.reduce((total, item) => (total + parseFloat(item.price.replace(',', '.'))), 0).toFixed(2).replace('.', ','));
-    }
-
-
-
     return (
       <div className="App">
-        <div>
-          <button onClick={() => this.switchTab(1)} style={{ marginRight: '10px' }}>Все товары</button>
-          <button onClick={() => this.switchTab(2)} style={{ marginRight: '10px' }}>Избранное</button>
-          <button onClick={() => this.switchTab(3)} style={{ marginRight: '10px' }}>Корзина</button>
-        </div>
-        {tab === 1 && (                   //все = filteredProducts
-          <div>
-            <SearchBox 
-              className='products-search-box'
-              onChangeHandler={onSearchChange} 
-              placeholder='Поиск'
-              
-            />
-            <hr />
-            <CardList products={filteredProducts} onAddToCart={this.handleAddToCart} onRemoveFromCart={this.handleRemoveFromCart} onToggleFav={this.handleToggleFav} cartCount={this.cartCount}/>
-          </div>
-          )
-        }
-        <BrowserRouter>
-            <Routes>
-                <Route path="home" element={<PageOne />} />
-                <Route path="cart" element={<PageTwo />} />
-            </Routes>
-        </BrowserRouter>
-        {tab === 2 && (                 //избранное = fav [...this.state.fav]
-          <div>
-            <hr />
-            <CardList products={[...this.state.fav]} onAddToCart={this.handleAddToCart} onRemoveFromCart={this.handleRemoveFromCart} onToggleFav={this.handleToggleFav} cartCount={this.cartCount}/>
-          </div>
-        )}
-        {tab === 3 && (
-        <div>
-          <hr />
-          {[...this.state.cartSet].map((product) => (
-            <div key={product.id}>
-              <div><h3>{product.name} <button onClick={() => this.handleToggleFav(product)}>♡</button></h3></div>
-              <div>{product.store}: {product.price}₽</div>
-                <div>
-                  <button onClick={() => this.handleRemoveFromCart(product)}>-</button> 
-                  {"    "+this.cartCount(product)+"   "}
-                  <button onClick={() => this.handleAddToCart(product)}>+</button> 
-                </div>
-              <div>{this.cartCount}</div> 
+        <div className='page'>
+          <Header/>
+          <Routes>
+            <Route path="/" element = {
+              <div>
+              <SearchBox
+                className='products-search-box'
+                onChangeHandler={onSearchChange}
+                placeholder='Поиск'
+              />
               <hr />
+              <CardList products={filteredProducts} onAddToCart={this.handleAddToCart} onRemoveFromCart={this.handleRemoveFromCart} onToggleFav={this.handleToggleFav} cartCount={this.cartCount}/>
             </div>
-          ))}
-          <h2>{totalPrice()} ₽</h2>
-          <hr />
-          <button onClick={()=>this.confirmCart()}> C:</button>
+            }
+            />
+
+            <Route path="/fav" element = {
+                  <div>
+                  <hr />
+                  <CardList products={[...this.state.fav]} onAddToCart={this.handleAddToCart} onRemoveFromCart={this.handleRemoveFromCart} onToggleFav={this.handleToggleFav} cartCount={this.cartCount}/>
+                </div>
+            }/>
+
+            <Route path="/cart" element = {
+              <div>
+              <hr />
+              {[...this.state.cartSet].map((product) => (
+                <div key={product.id}>
+                  <div><h3>{product.name} <button className="button button_type_small" onClick={() => this.handleToggleFav(product)}>♡</button></h3></div>
+                  <div>{product.store}: {product.price}₽</div>
+                    <div>
+                      <button className="button button_type_small" onClick={() => this.handleRemoveFromCart(product)}>-</button>
+                      {"    "+this.cartCount(product)+"   "}
+                      <button className="button button_type_small" onClick={() => this.handleAddToCart(product)}>+</button>
+                    </div>
+                  <div>{this.cartCount}</div>
+                  <hr />
+                </div>
+              ))}
+              <h2>{analysedCosts}</h2>
+              <hr />
+              <button className="button button_type_main" onClick={()=>this.confirmCart()}>Подтвердить</button>
+            </div>
+            }/>
+          </Routes>
         </div>
-      )}
       </div>
     );
   }
-  
-  
+
   render() {
     return (
       <div >

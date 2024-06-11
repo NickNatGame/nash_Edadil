@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@import url('./blocks/page/page.css');
+@import url('./blocks/header/header.css');
+@import url('./blocks/link/link.css');
+@import url('./blocks/button/button.css');
+@import url('./blocks/button/_type/_main/button_type_main.css');
+@import url('./blocks/button/_type/_small/button_type_small.css');

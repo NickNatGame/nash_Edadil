@@ -1,8 +1,9 @@
 import json
-
+import os
+dir = os.path.abspath(os.curdir)
 
 def test_json():
-    with open("D:/nash_Edadil/shopping/frontend/src/product_list.json", "r") as json_file:
+    with open(dir + "\\api\\product_list.json") as json_file:
         data = json.load(json_file)
     return data
 

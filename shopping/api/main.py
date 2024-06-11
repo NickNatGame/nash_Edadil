@@ -19,7 +19,7 @@ def parsing():
                 renderer="Intel Iris OpenGL Engine",
                 fix_hairline=True,
                 )
-        save_file(azvuka_vkusa(driver) + perekrestok(driver) + spar(driver))
+        save_file(perekrestok(driver) + spar(driver) + azvuka_vkusa(driver))
         driver.quit()
 def cart():
         analize()

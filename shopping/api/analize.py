@@ -18,27 +18,27 @@ def eurospar(summ):
     else:
         return summ
 
-def analize():
+def analize(data):
     cart = []
+    cart_1 = []
     cart_var = []
 
-    with open("../frontend/src/product_list.json", "r") as file:
-        l = json.load(file)
+    l = json.loads(data)
 
-    for i in range(15):
-        j = random.randint(0,len(l)-1) #загрузите json пжпж вместо этого
-        cart.append(l[j])
-    cart_new = [[0 for i in range(4)]for i in range(len(cart))]
+    for i in range(len(l)):
+        if l[i] not in cart:
+            cart.append(l[i])
+        cart_1.append(l[i])
+
+    cart_new = [[0 for i in range(4)] for i in range(len(cart))]
     for i in range(len(cart)):
-        cart_new[i][0] = random.randint(1, 10)
-
-
+        cart_new[i][0] = cart_1.count(cart[i])
 
     for i in range(len(cart)):
         for j in range(3):
             if (cart[i].get("store") == "азбука вкуса"):
                 cart_new[i][1] = cart[i]
-            if(cart[i].get("store") == "перекресток"):
+            if (cart[i].get("store") == "перекресток"):
                 cart_new[i][2] = cart[i]
             if (cart[i].get("store") == "евроспар"):
                 cart_new[i][3] = cart[i]
@@ -69,19 +69,28 @@ def analize():
                 fl = True
                 break
             fl = False
-            if(s[j] == '1'):
-                summ1 += float(cart_new[j][int(s[j])].get("price"))*float(cart_new[j][0])
-            if(s[j] == '2'):
+            if (s[j] == '1'):
+                summ1 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
+            if (s[j] == '2'):
                 summ2 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
             if (s[j] == '3'):
                 summ3 += float(cart_new[j][int(s[j])].get("price")) * float(cart_new[j][0])
-        if fl == False and perek(summ2) != False and eurospar(summ3) != False:
-            lst.append(azbuka(summ1)+perek(summ2)+eurospar(summ3))
-
-
-    '''for i in range(len(cart_new)):
+        if fl == False:
+            if summ2 == 0 and summ3 != 0 and eurospar(summ3) != False:
+                lst.append(azbuka(summ1) + eurospar(summ3))
+            if summ2 != 0 and summ3 == 0 and perek(summ2) != False:
+                lst.append(azbuka(summ1) + perek(summ2))
+            if summ2 == 0 and summ3 == 0:
+                lst.append(azbuka(summ1))
+            if summ2 != 0 and perek(summ2) != False and summ3 != 0 and eurospar(summ3) != False:
+                lst.append(azbuka(summ1) + + perek(summ2) + eurospar(summ3))
+    print(lst)
+    for i in range(len(cart_new)):
         for j in range(4):
             print(cart_new[i][j], end = " ")
-        print()'''
-    return lst
+        print()
+    if(len(lst) == 0):
+        return "Не набрана минимальная цена заказа из какого-то магазина"
+    else:
+        return f"{round(min(lst),2)} ₽"
 

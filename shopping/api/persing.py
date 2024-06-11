@@ -32,8 +32,8 @@ def azvuka_vkusa(driver):
 
     for i in range(len(lst_url)):
         driver.get(lst_url[i])
-        button = driver.find_element(By.CLASS_NAME,"button_content")
-        button.click()
+        '''button = driver.find_element(By.CLASS_NAME,"button_content")
+        button.click()'''
         body = driver.find_element(By.TAG_NAME,'body')
         for i in range(20):
             body.send_keys(Keys.ARROW_RIGHT)
