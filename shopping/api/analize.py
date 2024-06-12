@@ -23,12 +23,15 @@ def analize(data):
     cart_1 = []
     cart_var = []
 
-    l = json.loads(data)
+    l_cart = json.loads(data)
+    with open("D:/nash_Edadil/shopping/frontend/src/product_list.json", "r") as file:
+        l = json.load(file)
 
-    for i in range(len(l)):
-        if l[i] not in cart:
-            cart.append(l[i])
-        cart_1.append(l[i])
+
+    for i in range(len(l_cart)):
+        if l_cart[i] not in cart:
+            cart.append(l_cart[i])
+        cart_1.append(l_cart[i])
 
     cart_new = [[0 for i in range(4)] for i in range(len(cart))]
     for i in range(len(cart)):
