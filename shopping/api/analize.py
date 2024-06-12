@@ -55,6 +55,7 @@ def analize(data):
     lst_price = []
     lst_cart = []
     lst_price_1 = []
+    lst_cart_1 = []
     fl = False
     summ1 = 0
     summ2 = 0
@@ -81,34 +82,41 @@ def analize(data):
             if summ2 == 0 and summ3 != 0 and eurospar(summ3) != False and summ1 != 0:
                 lst_price.append(azbuka(summ1) + eurospar(summ3))
                 lst_price_1.append(summ1 + summ3)
-                #lst_cart[j].append(cart_new[j][int(s[j])])
+                lst_cart.append(s)
             if summ2 != 0 and summ3 == 0 and perek(summ2) != False and summ1 != 0:
                 lst_price.append(azbuka(summ1) + perek(summ2))
                 lst_price_1.append(summ1 + summ2)
+                lst_cart.append(s)
             if summ2 == 0 and summ3 == 0 and summ1 != 0:
                 lst_price.append(azbuka(summ1))
                 lst_price_1.append(summ1)
+                lst_cart.append(s)
             if summ2 != 0 and perek(summ2) != False and summ3 != 0 and eurospar(summ3) != False and summ1 != 0:
                 lst_price.append(azbuka(summ1) + perek(summ2) + eurospar(summ3))
                 lst_price_1.append(summ1 + summ2 + summ3)
+                lst_cart.append(s)
             if summ2 == 0 and summ3 != 0 and eurospar(summ3) != False and summ1 == 0:
                 lst_price.append(eurospar(summ3))
                 lst_price_1.append(summ3)
+                lst_cart.append(s)
             if summ2 != 0 and summ3 == 0 and perek(summ2) != False and summ1 == 0:
                 lst_price.append(perek(summ2))
                 lst_price_1.append(summ2)
+                lst_cart.append(s)
             if summ2 != 0 and perek(summ2) != False and summ3 != 0 and eurospar(summ3) != False and summ1 == 0:
                 lst_price.append(perek(summ2) + eurospar(summ3))
                 lst_price_1.append(summ2 + summ3)
-    for i in range(len(cart_new)):
+                lst_cart.append(s)
+    '''for i in range(len(cart_new)):
         for j in range(4):
-            print(cart_new[i][j], end = " ")
+            print(cart_new[i][j], end = " ")'''
 
-    for i in range(1, 4):
-        for j in range(len(cart_new)):
-            if cart_new[j][i] != 0:
-                lst_cart.extend([cart_new[j][i]] * cart_new[j][0])
     if(len(lst_price) == 0 or lst_price[0] == 175):
         return "Не набрана минимальная цена заказа из какого-то магазина"
     else:
-        return [f"{round(min(lst_price),2)} ₽ ( Без доставки {round(min(lst_price_1),2)} ₽ )",lst_cart]
+        l = lst_cart[lst_price.index(min(lst_price))]
+        l = f"{l}"
+        for i in range(len(l)):
+            if(cart_new[i][int(l[i])] not in lst_cart_1):
+                lst_cart_1.append(cart_new[i][int(l[i])])
+        return [f"{round(min(lst_price),2)} ₽ ( Без доставки {round(min(lst_price_1),2)} ₽ )",lst_cart_1]

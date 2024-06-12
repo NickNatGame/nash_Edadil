@@ -18,8 +18,7 @@ class App extends Component {
       cartSet: new Set(),
       tab: 1, // 1=main; 2=fvrt; 3=cart
       analysedCosts: 0,
-      analysedCart: [],
-      analysedCartSet: new Set()
+      analysedCart: []
     };
   }
 
@@ -81,7 +80,7 @@ class App extends Component {
   changeCartSet = () => {
     const { cart } = this.state;
     const newCartSet = new Set(cart);
-    const k = this.totalPrice(cart);
+    const k = this.totalPrice();
     this.setState({
       cartSet: newCartSet,
       analysedCosts: "Цена без доставки, без оптимизации " + k + " ₽"
@@ -98,11 +97,6 @@ class App extends Component {
     this.setState({ tab: num });
   }
 
-  analysedCartCount = (product) => {
-    const { analysedCart } = this.state;
-    return analysedCart.filter(item => item === product).length;
-  }
-
   confirmCart = () => {
     const cartJSON = JSON.stringify(this.state.cart);
     this.getAnalysedCosts(cartJSON);
@@ -116,9 +110,9 @@ class App extends Component {
           const result = JSON.parse(jsonString);
           this.setState({
             analysedCart: result[1],
-            analysedCosts: "Оптимизированная цена с доставкой " + result[0],
-            analysedCartSet: new Set(result[1])
+            analysedCosts: "Оптимизированная цена с доставкой " + result[0]
           });
+          console.log(result[1]);
         } catch {
           this.setState({ analysedCosts: jsonString });
         }
@@ -131,7 +125,7 @@ class App extends Component {
   };
 
   renderContent() {
-    const { products, searchField, analysedCosts, cart, cartSet, fav, analysedCartSet } = this.state;
+    const { products, searchField, analysedCosts, cart, cartSet, fav, analysedCart } = this.state;
     const { onSearchChange } = this;
     const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchField));
 
@@ -193,9 +187,9 @@ class App extends Component {
                 <h2>{analysedCosts}</h2>
                 <hr />
                 <button className="button button_type_main" onClick={this.confirmCart}>Подтвердить</button>
-                {[...analysedCartSet].map((product) => (
-                  <div key={product.id}>
-                    <div>{product.name}: {this.analysedCartCount(product)}</div>
+                {analysedCart.map((product, index) => (
+                  <div key={index}>
+                    <div>{product.name}</div>
                     <div>{product.store}: {product.price}₽</div>
                     <hr />
                   </div>
