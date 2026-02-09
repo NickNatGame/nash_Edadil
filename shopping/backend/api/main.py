@@ -1,8 +1,8 @@
 from selenium import webdriver
 from selenium_stealth import stealth
-from .work_with_json import save_file
-from .persing import perekrestok,azvuka_vkusa,spar
-from .analize import analize
+from .json_utils import save_file
+from .parsing import perekrestok, azvuka_vkusa, spar
+from .analyze import analyze
 
 def parsing():
         options = webdriver.ChromeOptions()
@@ -22,9 +22,9 @@ def parsing():
         save_file(perekrestok(driver) + spar(driver) + azvuka_vkusa(driver))
         driver.quit()
 def cart():
-        analize()
+        analyze()
 #clear_file()
 #save_file(azvuka_vkusa(driver))
 #save_file(azvuka_vkusa(driver)+perekrestok(driver)+spar(driver))
 #save_file(perekrestok(driver))
-#test_json()
+#load_sample_data()

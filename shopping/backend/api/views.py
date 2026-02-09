@@ -1,15 +1,15 @@
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
-from .analize import analize
-from .test import test_json
+from .analyze import analyze
+from .sample_data import load_sample_data
 from .main import parsing
-from .work_with_json import save_file,clear_file
+from .json_utils import save_file, clear_file
 
 # Загрузите данные из JSON файла
 def get_products(request):
     #parsing()
-    data = test_json()
+    data = load_sample_data()
     return JsonResponse(data, safe=False)
    
 
@@ -21,6 +21,6 @@ def analyze_cart(request):
         '''with open('cart_data.json', 'w', encoding='utf-8') as file:
             json.dump(cart_data, file)'''
 
-        result = str(analize(cart_data))
+        result = str(analyze(cart_data))
 
         return JsonResponse(result, safe=False)

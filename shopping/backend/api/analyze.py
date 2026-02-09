@@ -18,7 +18,7 @@ def eurospar(summ):
     else:
         return summ
 
-def analize(data):
+def analyze(data):
     cart = []
     cart_1 = []
     cart_var = []

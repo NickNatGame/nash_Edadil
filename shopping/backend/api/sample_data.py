@@ -2,7 +2,7 @@ import json
 import os
 dir = os.path.abspath(os.curdir)
 
-def test_json():
+def load_sample_data():
     with open(dir + "\\api\\product_list.json") as json_file:
         data = json.load(json_file)
     return data
