@@ -1,9 +1,11 @@
 import json
-import os
-dir = os.path.abspath(os.curdir)
+from pathlib import Path
+
+API_DIR = Path(__file__).resolve().parent
+PRODUCTS_FILE = API_DIR / "product_list.json"
 
 def test_json():
-    with open(dir + "\\api\\product_list.json") as json_file:
+    with PRODUCTS_FILE.open(encoding="utf-8") as json_file:
         data = json.load(json_file)
     return data
 

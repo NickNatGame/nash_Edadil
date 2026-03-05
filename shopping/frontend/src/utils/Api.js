@@ -1,5 +1,5 @@
 const apiOptions = {
-    baseUrl: "http://localhost:3001",
+    baseUrl: process.env.REACT_APP_API_URL || "http://localhost:8000",
     headers: {
         "Content-Type": "application/json",
         "Accept":"*/*",
@@ -13,7 +13,6 @@ class Api {
     }
     
 _checkStatus(res) {
-    console.log(res);
     if (res.ok) {
         return res.json();
     }

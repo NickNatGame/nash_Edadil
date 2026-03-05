@@ -17,7 +17,7 @@ class App extends Component {
       cart: [],
       cartSet: new Set(),
       tab: 1, // 1=main; 2=fvrt; 3=cart
-      analysedCosts: 0,
+      analysedCosts: '',
       analysedCart: []
     };
   }
@@ -98,24 +98,38 @@ class App extends Component {
   }
 
   confirmCart = () => {
+    if (this.state.cart.length === 0) {
+      this.setState({
+        analysedCosts: "Корзина пуста",
+        analysedCart: []
+      });
+      return;
+    }
     const cartJSON = JSON.stringify(this.state.cart);
     this.getAnalysedCosts(cartJSON);
   }
 
   getAnalysedCosts(cart) {
     api.getAnalysedCost(cart)
-      .then((resultString) => {
-        let jsonString = resultString.replace(/'/g, '"');
-        try {
-          const result = JSON.parse(jsonString);
+      .then((result) => {
+        if (result.ok) {
           this.setState({
-            analysedCart: result[1],
-            analysedCosts: "Оптимизированная цена с доставкой " + result[0]
+            analysedCart: result.items || [],
+            analysedCosts: "Оптимизированная цена с доставкой " + result.message
           });
-          console.log(result[1]);
-        } catch {
-          this.setState({ analysedCosts: jsonString });
+          return;
         }
+
+        this.setState({
+          analysedCart: [],
+          analysedCosts: result.message || "Не удалось оптимизировать корзину"
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          analysedCart: [],
+          analysedCosts: `Ошибка при анализе корзины: ${err}`
+        });
       });
   }
 
@@ -169,7 +183,7 @@ class App extends Component {
               <div>
                 <hr />
                 {[...cartSet].map((product) => (
-                  <div key={product.id}>
+                  <div key={`${product.name}-${product.store}`}>
                     <div>
                       <h3>
                         {product.name} <button className="button button_type_small" onClick={() => this.handleToggleFav(product)}>♡</button>

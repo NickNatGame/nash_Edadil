@@ -1,0 +1,4 @@
+Django==4.2.13
+django-cors-headers==4.4.0
+selenium==4.24.0
+selenium-stealth==1.0.6
