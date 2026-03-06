@@ -16,7 +16,7 @@ def analyze_cart(request):
         return JsonResponse({'detail': 'Method not allowed'}, status=405)
 
     try:
-        result = analize(request.body)
+        result = analyze(request.body)
     except Exception as exc:
         return JsonResponse({'detail': f'Invalid cart payload: {exc}'}, status=400)
 
