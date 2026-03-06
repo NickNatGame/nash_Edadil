@@ -118,10 +118,8 @@ class App extends Component {
 
   getAnalysedCosts(cart) {
     api.getAnalysedCost(cart)
-      .then((resultString) => {
-        let jsonString = resultString.replace(/'/g, '"');
-        try {
-          const result = JSON.parse(jsonString);
+      .then((result) => {
+        if (result.ok) {
           this.setState({
 <<<<<<< Updated upstream
             analysedCart: result[1],
@@ -202,7 +200,7 @@ class App extends Component {
               <div>
                 <hr />
                 {[...cartSet].map((product) => (
-                  <div key={product.id}>
+                  <div key={`${product.name}-${product.store}`}>
                     <div>
                       <h3>
                         {product.name} <button className="button button_type_small" onClick={() => this.handleToggleFav(product)}>♡</button>

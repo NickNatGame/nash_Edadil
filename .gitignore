@@ -1,0 +1,10 @@
+.venv/
+.idea/
+SECRETS/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+build/
+dist/
+shopping/backend/db.sqlite3
