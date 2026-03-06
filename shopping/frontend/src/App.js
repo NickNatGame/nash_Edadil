@@ -16,12 +16,7 @@ class App extends Component {
       fav: new Set(),
       cart: [],
       cartSet: new Set(),
-<<<<<<< Updated upstream
-      tab: 1, // 1=main; 2=fvrt; 3=cart
-      analysedCosts: 0,
-=======
       analysedCosts: '',
->>>>>>> Stashed changes
       analysedCart: []
     };
   }
@@ -102,8 +97,6 @@ class App extends Component {
   }
 
   confirmCart = () => {
-<<<<<<< Updated upstream
-=======
     if (this.state.cart.length === 0) {
       this.setState({
         analysedCosts: 'Корзина пуста',
@@ -111,7 +104,7 @@ class App extends Component {
       });
       return;
     }
->>>>>>> Stashed changes
+
     const cartJSON = JSON.stringify(this.state.cart);
     this.getAnalysedCosts(cartJSON);
   }
@@ -121,20 +114,11 @@ class App extends Component {
       .then((result) => {
         if (result.ok) {
           this.setState({
-<<<<<<< Updated upstream
-            analysedCart: result[1],
-            analysedCosts: "Оптимизированная цена с доставкой " + result[0]
-=======
             analysedCart: result.items || [],
             analysedCosts: `Оптимизированная цена с доставкой ${result.message}`
->>>>>>> Stashed changes
           });
-          console.log(result[1]);
-        } catch {
-          this.setState({ analysedCosts: jsonString });
+          return;
         }
-<<<<<<< Updated upstream
-=======
 
         this.setState({
           analysedCart: [],
@@ -146,7 +130,6 @@ class App extends Component {
           analysedCart: [],
           analysedCosts: `Ошибка при анализе корзины: ${err}`
         });
->>>>>>> Stashed changes
       });
   }
 
@@ -160,75 +143,6 @@ class App extends Component {
     const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchField));
 
     return (
-<<<<<<< Updated upstream
-      <div className="App">
-        <div className='page'>
-          <Header />
-          <Routes>
-            <Route path="/" element={
-              <div>
-                <SearchBox
-                  className='products-search-box'
-                  onChangeHandler={onSearchChange}
-                  placeholder='Поиск'
-                />
-                <hr />
-                <CardList
-                  products={filteredProducts}
-                  onAddToCart={this.handleAddToCart}
-                  onRemoveFromCart={this.handleRemoveFromCart}
-                  onToggleFav={this.handleToggleFav}
-                  cartCount={this.cartCount}
-                />
-              </div>
-            } />
-
-            <Route path="/fav" element={
-              <div>
-                <hr />
-                <CardList
-                  products={[...fav]}
-                  onAddToCart={this.handleAddToCart}
-                  onRemoveFromCart={this.handleRemoveFromCart}
-                  onToggleFav={this.handleToggleFav}
-                  cartCount={this.cartCount}
-                />
-              </div>
-            } />
-
-            <Route path="/cart" element={
-              <div>
-                <hr />
-                {[...cartSet].map((product) => (
-                  <div key={`${product.name}-${product.store}`}>
-                    <div>
-                      <h3>
-                        {product.name} <button className="button button_type_small" onClick={() => this.handleToggleFav(product)}>♡</button>
-                      </h3>
-                    </div>
-                    <div>{product.store}: {product.price}₽</div>
-                    <div>
-                      <button className="button button_type_small" onClick={() => this.handleRemoveFromCart(product)}>-</button>
-                      {" " + this.cartCount(product) + " "}
-                      <button className="button button_type_small" onClick={() => this.handleAddToCart(product)}>+</button>
-                    </div>
-                    <hr />
-                  </div>
-                ))}
-                <h2>{analysedCosts}</h2>
-                <hr />
-                <button className="button button_type_main" onClick={this.confirmCart}>Подтвердить</button>
-                {analysedCart.map((product, index) => (
-                  <div key={index}>
-                    <div>{product.name}</div>
-                    <div>{product.store}: {product.price}₽</div>
-                    <hr />
-                  </div>
-                ))}
-              </div>
-            } />
-          </Routes>
-=======
       <section className="content-section" aria-label="Каталог товаров">
         <div className="search-row">
           <SearchBox
@@ -236,7 +150,6 @@ class App extends Component {
             onChangeHandler={this.onSearchChange}
             placeholder="Поиск по названию"
           />
->>>>>>> Stashed changes
         </div>
         <CardList
           products={filteredProducts}

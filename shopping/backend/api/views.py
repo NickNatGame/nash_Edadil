@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .analize import analize
+from .analyze import analyze
 from .test import test_json
 
 # Загрузите данные из JSON файла

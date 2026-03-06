@@ -49,7 +49,7 @@ def analyze(data):
             if cart[i].get("store") == "азбука вкуса":
                 cart_new[i][1] = cart[i]
             if cart[i].get("store") == "перекресток":
-                cart_new[i][2] = cart[i]ы
+                cart_new[i][2] = cart[i]
             if cart[i].get("store") == "евроспар":
                 cart_new[i][3] = cart[i]
             for t in range(len(l)):
